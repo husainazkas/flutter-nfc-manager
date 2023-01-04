@@ -39,12 +39,15 @@ class NfcManager {
   ///
   /// `pollingOptions` is used to specify the type of tags to be discovered. All types by default.
   ///
+  /// (Android only) `disablePlatformSound` is used to disable platform sound when nfc tag detected. Default is false.
+  ///
   /// (iOS only) `alertMessage` is used to display the message on the popup shown when the session is started.
   ///
   /// (iOS only) `onError` is called when the session is stopped for some reason after the session has started.
   Future<void> startSession({
     required NfcTagCallback onDiscovered,
     Set<NfcPollingOption>? pollingOptions,
+    bool disablePlatformSound = false,
     String? alertMessage,
     NfcErrorCallback? onError,
   }) async {
@@ -54,6 +57,7 @@ class NfcManager {
     return channel.invokeMethod('Nfc#startSession', {
       'pollingOptions':
           pollingOptions.map((e) => $NfcPollingOptionTable[e]).toList(),
+      'disablePlatformSound': disablePlatformSound,
       'alertMessage': alertMessage,
     });
   }
